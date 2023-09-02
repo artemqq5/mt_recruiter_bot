@@ -1,1 +1,1 @@
-# MT_Recruter_bot
+Recruter bot
