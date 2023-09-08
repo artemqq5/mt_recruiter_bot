@@ -1,1 +1,1 @@
-Recruter bot
+Recruiter bot
