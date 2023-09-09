@@ -10,9 +10,9 @@ def set_menu_commands(message) -> ReplyKeyboardMarkup:
         keyboard.add(
             KeyboardButton(ADD_VACANCY),
             KeyboardButton(DELETE_VACANCY),
-            KeyboardButton(PUBLISHED_VACANCIES_LIST),
             KeyboardButton(SEND_MAIL_TO_ALL),
             KeyboardButton(LIST_OF_USERS_RESUME),
+            KeyboardButton(SHOW_VACANCIES),
         )
     else:
         keyboard.add(
