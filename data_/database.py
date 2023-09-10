@@ -38,6 +38,31 @@ class MyDataBase:
             print(f"add_user_sql: {e}")
             return None
 
+    def all_users_sql(self):
+        try:
+            with self.connection as connection:
+                with connection.cursor() as cursor:
+                    _command = f'''SELECT * FROM `users`;'''
+                    cursor.execute(_command)
+                connection.commit()
+                return cursor.fetchall()
+        except Exception as e:
+            print(f"get_resume_sql: {e}")
+            return None
+
+    def update_user_sql(self, telegram_id, name, age, city, workflow, sources, verticals, geo, profit, statistic):
+        try:
+            with self.connection as connection:
+                with connection.cursor() as cursor:
+                    _command = f'''UPDATE `users` SET `name` = %s, `age` = %s, `city` = %s, `workflow` = %s, `sources` = %s, `verticals` = %s, `geo` = %s, `profit` = %s, `statistic` = %s WHERE `telegram_id` = %s;'''
+                    cursor.execute(_command, (name, age, city, workflow, sources, verticals, geo, profit, statistic,
+                                              telegram_id))
+                connection.commit()
+                return cursor.lastrowid > 0
+        except Exception as e:
+            print(f"update_user_sql: {e}")
+            return None
+
     def add_vacancy_sql(self, title, requirements, responsibilities, bonus, contact):
         try:
             with self.connection as connection:
@@ -79,7 +104,7 @@ class MyDataBase:
             with self.connection as connection:
                 with connection.cursor() as cursor:
                     _command = f'''DELETE FROM `vacancies` WHERE `id` = %s;'''
-                    cursor.execute(_command, (id_vacancy, ))
+                    cursor.execute(_command, (id_vacancy,))
                 connection.commit()
                 return cursor.lastrowid
         except Exception as e:

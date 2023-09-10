@@ -9,8 +9,14 @@ class MyRepository(MyDataBase):
     def get_user(self, telegram_id):
         return self.get_user_sql(telegram_id)
 
+    def all_users(self):
+        return self.all_users_sql()
+
+    def update_user(self, telegram_id, name, age, city, workflow, sources, verticals, geo, profit, statistic):
+        return self.update_user_sql(telegram_id, name, age, city, workflow, sources, verticals, geo, profit, statistic)
+
     def add_vacancy(self, title, requirements, responsibilities, bonus, contact):
-        return self.add_vacancy_sql(title,requirements, responsibilities, bonus, contact)
+        return self.add_vacancy_sql(title, requirements, responsibilities, bonus, contact)
 
     def get_vacancy(self, id_vacancy):
         return self.get_vacancy_sql(id_vacancy)
