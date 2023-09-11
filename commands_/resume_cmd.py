@@ -68,15 +68,21 @@ async def my_resume_cmd(bot, message):
 
 
 async def all_resume_cmd(message):
-    all_resume = MyRepository().all_users()
+    count = 0
+    all_resume = MyRepository().all_candidates()
     if all_resume is not None:
         if len(all_resume) > 0:
             keyboard_markup = InlineKeyboardMarkup()
             for i in all_resume:
-                if i['role'] == 'user':
+                if i['name'] is not None:
+                    count += 1
                     resume = f"{i['name']} | {i['age']} | {i['city']}"
                     keyboard_markup.add(InlineKeyboardButton(resume, callback_data=f"resume_{i['telegram_id']}"))
-                    await message.answer("Анкети користувачів:", reply_markup=keyboard_markup)
+
+            if count > 0:
+                await message.answer("Анкети користувачів:", reply_markup=keyboard_markup)
+            else:
+                await message.answer("Список поки пустий, чекайте на оновлення")
         else:
             await message.answer("Список поки пустий, чекайте на оновлення")
     else:

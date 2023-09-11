@@ -35,19 +35,19 @@ class MyDataBase:
                 connection.commit()
                 return cursor.fetchall()[0]
         except Exception as e:
-            print(f"add_user_sql: {e}")
+            print(f"get_user_sql: {e}")
             return None
 
-    def all_users_sql(self):
+    def all_candidates_sql(self):
         try:
             with self.connection as connection:
                 with connection.cursor() as cursor:
-                    _command = f'''SELECT * FROM `users`;'''
-                    cursor.execute(_command)
+                    _command = f'''SELECT * FROM `users` WHERE `role` = %s;'''
+                    cursor.execute(_command, ('user', ))
                 connection.commit()
                 return cursor.fetchall()
         except Exception as e:
-            print(f"get_resume_sql: {e}")
+            print(f"all_resume_sql: {e}")
             return None
 
     def update_user_sql(self, telegram_id, name, age, city, workflow, sources, verticals, geo, profit, statistic):
