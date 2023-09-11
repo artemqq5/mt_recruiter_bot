@@ -11,7 +11,7 @@ async def mailing_message_cmd(message):
 
 
 async def mailing_user_cmd(bot, message):
-    users = MyRepository().all_users()
+    users = MyRepository().all_candidates()
     unsuccessful = 1
     user_error = ""
 
