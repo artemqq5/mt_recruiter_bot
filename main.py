@@ -120,7 +120,7 @@ async def set_responsibilities_vacancy(message: types.Message, state: FSMContext
 async def set_bonus_vacancy(message: types.Message, state: FSMContext):
     await VacancyState.next()
     await state.update_data(bonus=message.text)
-    await message.answer("Введіть контакти для зв'язку:", reply_markup=cancel_state())
+    await message.answer("Введіть контакти для зв'язку (твій нік тг без @):", reply_markup=cancel_state())
 
 
 @dp.message_handler(state=VacancyState.contact)
@@ -189,7 +189,7 @@ async def set_geo_resume(message: types.Message, state: FSMContext):
 async def set_profit_resume(message: types.Message, state: FSMContext):
     await ResumeState.next()
     await state.update_data(profit=message.text)
-    await message.answer("Скинь фото статистики останніх заливів", reply_markup=cancel_state())
+    await message.answer("Скинь фото статистики останніх заливів (Скинь саме фото, не файлом)", reply_markup=cancel_state())
 
 
 @dp.message_handler(content_types=["photo"], state=ResumeState.statistic)
