@@ -3,6 +3,7 @@ import logging
 from aiogram import Bot, Dispatcher, types, executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher.filters import ContentTypeFilter
 from aiogram.types import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardRemove
 
 from buttons_.buttons_menu import set_menu_commands, cancel_state, workflow_type, source_type, verticals_type, \
@@ -189,7 +190,8 @@ async def set_geo_resume(message: types.Message, state: FSMContext):
 async def set_profit_resume(message: types.Message, state: FSMContext):
     await ResumeState.next()
     await state.update_data(profit=message.text)
-    await message.answer("Скинь фото статистики останніх заливів (Скинь саме фото, не файлом)", reply_markup=cancel_state())
+    await message.answer("Скинь фото статистики останніх заливів (Скинь саме фото, не файлом)",
+                         reply_markup=cancel_state())
 
 
 @dp.message_handler(content_types=["photo"], state=ResumeState.statistic)
@@ -198,7 +200,12 @@ async def set_statistic_resume(message: types.Message, state: FSMContext):
     await state.update_data(statistic=smallest_photo_id)
     data = await state.get_data()
     await state.finish()
-    await add_finish_resume_cmd(message, data)
+    await add_finish_resume_cmd(bot, message, data)
+
+
+@dp.message_handler(lambda message: message.photo == [], state=ResumeState.statistic)
+async def set_wrong_statistic_resume(message: types.Message, state: FSMContext):
+    await message.answer("Неправильний формат, скинь фото")
 
 
 @dp.callback_query_handler(lambda call: "vacancy" in call.data)

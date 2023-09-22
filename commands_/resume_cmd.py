@@ -1,7 +1,7 @@
 from aiogram.types import ReplyKeyboardRemove, ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
 
 from buttons_.buttons_menu import cancel_state, set_menu_commands
-from constants_.main_constants import ADD_RESUME_TEXT
+from constants_.main_constants import ADD_RESUME_TEXT, SUBSCRIBE_MASONS
 from data_.repository import MyRepository
 from states.resume_state import ResumeState
 
@@ -11,7 +11,7 @@ async def add_start_resume_cmd(message):
     await message.answer("Як тебе звати?", reply_markup=cancel_state())
 
 
-async def add_finish_resume_cmd(message, data):
+async def add_finish_resume_cmd(bot, message, data):
     result = MyRepository().update_user(
         telegram_id=message.chat.id,
         name=data['name'],
@@ -27,6 +27,10 @@ async def add_finish_resume_cmd(message, data):
 
     if result is not None:
         await message.answer(ADD_RESUME_TEXT, parse_mode=ParseMode.HTML, reply_markup=set_menu_commands(message))
+
+        subscribe_button = InlineKeyboardMarkup()
+        subscribe_button.add(InlineKeyboardButton(text="Підписатися", url=f"https://t.me/masoninfo"))
+        await bot.send_message(message.chat.id, SUBSCRIBE_MASONS, reply_markup=subscribe_button)
     else:
         await message.answer(
             "Виникла помилка, не вдалося додати резюме, перезапустіть бот /start",
